@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emu Agora - Single Player</title>
+    <style>
+        * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+    font-family: Arial, sans-serif;
+    background: url("gifts/singleplayer.gif") no-repeat;
+    background-size: 100% auto;
+    background-attachment: fixed;
+    background-position: top center;
+    background-color: #000;
+    color: orange;
+    
+  }
+     
+    header {
+      position: relative; /* necessário para o h1 ser absoluto dentro dele */
+      display: flex;
+      align-items: center;
+      background-color: #4b4b4b;
+      padding: 5px;
+      z-index: 1;
+       width: 100%;
+    }
+
+    .logo {
+      height: 110px;
+    }
+
+
+    nav {
+      background-color: #4b4b4b;
+      width: 100%;
+      z-index: 1;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      gap: 50px;
+      padding: 1px 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: orange;
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
+
+    h1 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 5rem;
+      color: orange;
+    }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 50px;
+            padding: 50px;
+        }
+
+        
+
+
+
+        .game-box {
+            background-color: #414141;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .game-box:hover {
+            transform: scale(1.05);
+        }
+        .game-box img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+/*.game-box {
+  background-color: #414141;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-box:hover {
+  transform: scale(1.05);
+}
+
+.game-box img {
+  width: auto;
+  max-height: 270px;
+  min-height: 220px;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+}
+*/
+
+
+
+
+
+
+        
+        .game-box p {
+            margin: -5px 0 0;
+            font-size: 25px;
+            color: orange;
+            text-align: center;
+            text-shadow: 2px 2px 5px rgba(255, 153, 0, 0.99);
+            font-family: 'Courier New', cursive; 
+        }
+        .game-box a {
+         text-decoration-color: rgb(0, 0, 0);}
+
+        @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        position: static;
+        transform: none;
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+    </style>
+</head>
+<body>
+    
+    <header>  
+        <a href="index.html"><img src="imagens\emu agora logo.png" alt="Logo Emu" class="logo" /></a>
+        <h1>singleplayer</h1>
+      </header>
+
+     <nav>
+    <ul>
+      <li><a href="singleplayer.html">Singleplayer</a></li>
+      <li><a href="multiplayer.html">Multiplayer</a></li>
+    </ul>
+  </nav>
+
+    <div class="container" id="game-container"></div>
+
+   <script>
+    const games = [
+        { name: "Adventures of batman & robin(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Adventures%20of%20batman%20%26%20robin(1)(SNES).jpg", title: "Aventuras de Batman & Robin (SNES)" },
+        { name: "Aero the Acro-Bat 2 (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Aero%20the%20Acro-Bat%202%20(1)(SNES).PNG", title: " Aero the Acro-Bat 2 (SNES)" },
+        { name: "Aladdin(1)(BR)(SNES).sfc", image: "capa dos jogos/aladdin(br)(Super Nintendo)(Single).png", title: "AladdinN (SNES)" },
+        { name: "Alcahest(1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Alcahest(1)(BR)(SNES).PNG", title: "Alcahest (SNES)" },
+        { name: "Animaniacs(1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Animaniacs(1)(BR)(SNES).PNG", title: " Animaniacs (SNES)" },
+        { name: "Art of Fighting(2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Art%20of%20Fighting(2)(SNES).webp", title: "Arte da Luta (SNES)" },
+        { name: "Axelay(1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Axelay(1)(SNES).PNG", title: "Axelay (SNES)" },
+        { name: "B.O.B(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/B.O.B(1)(SNES).PNG", title: "B.O.B(SNES)" },
+        { name: "Ballz 3D(2)(SNES)(USA).sfc", image: "https://emaagora.b-cdn.net/images/Ballz%203D(2)(SNES)(USA).PNG", title: "Ballz 3D (SNES)" },
+        { name: "Battletoads & double dragon(2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Battletoads%20%26%20double%20dragon(2)(BR)(SNES).PNG", title: "Battletoads & Double Dragon (SNES)" },
+        { name: "Battletoads in Battlemaniacs(2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Battletoads%20in%20Battlemaniacs(2)(BR)(SNES).PNG", title: "Sapos de Batalha (SNES)" },
+        { name: "Beavis and Butt-Head(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Beavis%20and%20Butt-Head(1)(SNES).PNG", title: "Beavis and Butt-Head (SNES)" },
+        { name: "Biker Mice from Mars(2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Biker%20Mice%20from%20Mars(2)(SNES).PNG", title: "Motociclista de Marte (SNES)" },
+        { name: "Bonkers (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Bonkers%20(1)(BR)(SNES).PNG", title: "Bonkers (SNES)" },
+        { name: "Boogerman(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Boogerman(1)(SNES).PNG", title: "Boogerman (SNES)" },
+        { name: "Brain Lord (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Brain%20Lord%20(1)(BR)(SNES).PNG", title: "Lord Cerebral (SNES)" },
+        { name: "BS Legend of Zelda(1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/BS%20Legend%20of%20Zelda(1)(BR)(SNES).PNG", title: "BS A Lenda de Zelda (SNES)" },
+        { name: "Captain America and the Avengers(2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Captain%20America%20and%20the%20Avengers(2)(BR)(SNES).PNG", title: "Capitão America e Os Vingadores (SNES)" },
+        { name: "Captain Commando(2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Captain%20Commando(2)(BR)(SNES).PNG", title: "Capitão Comando (SNES)" },
+        { name: "Castlevania Dracula X(1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Castlevania%20Dracula%20X(1)(BR)(SNES).PNG", title: "Castlevania Dracula X (SNES)" },
+        { name: "Castlevania IV(1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Castlevania%20IV(1)(BR)(SNES).PNG", title: "Castlevania IV (SNES)" },
+        { name: "Chester Cheetah(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Chester%20Cheetah(1)(SNES).PNG", title: "Aventura Cheetos (SNES)" },
+        { name: "Cho Aniki - Buff Battle Ballad(2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Cho%20Aniki%20-%20Buff%20Battle%20Ballad(2)(SNES).PNG", title: "Batalha dos Deuses (SNES)" },
+        { name: "Choujikuu Yousai Macross(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/CChoujikuu%20Yousai%20Macross(1)(SNES).PNG", title: "Fortaleza Espacial (SNES)" },
+        { name: "chrono trigger (1)(BR)(SNES).smc", image: "capa dos jogos/chrono trigger (br)(Super Nintendo)(Single).png", title: "Chrono Trigger(SNES)" },
+        { name: "Chuck Rock (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Chuck%20Rock%20(1)(SNES).PNG", title: "Chuck - Doido de Pedra (SNES)" },
+        { name: "Clay Fighter 2 (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Clay%20Fighter%202%20(2)(SNES).PNG", title: "Guerreiros de Argila (SNES)" },
+        { name: "Claymates (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Claymates%20(1)(SNES).PNG", title: "Criaturas de Argila (SNES)" },
+        { name: "Clock Tower (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Clock%20Tower%20(1)(BR)(SNES).PNG", title: "Torre do Relógio (SNES)" },
+        { name: "Contra III (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Contra%20III%20(2)(BR)(SNES).PNG", title: "Contra III (SNES)" },
+        { name: "Cool Spot (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Cool%20Spot%20(1)(SNES).PNG", title: "Cool Spot (SNES)" },
+        { name: "Cutthroat Island (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Cutthroat%20Island%20(2)(BR)(SNES).PNG", title: "Ilha dos Traidores (SNES)" },
+        { name: "Cybernator(1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Cybernator(1)(BR)(SNES).PNG", title: "Cyberesterminador (SNES)" },
+        { name: "Daffy Duck The Marvin Missions (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Daffy%20Duck%20The%20Marvin%20Missions%20(1)(BR)(SNES).PNG", title: "Patolino: Missão em Marte (SNES)" },
+        { name: "Deae Tonosama Appare Ichiban (2)(Japan)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Deae%20Tonosama%20Appare%20Ichiban%20(2)(Japan)(SNES).webp", title: "Desafio dos Principes (SNES)" },
+        { name: "demons crest (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/demons%20crest%20(br)(Super%20Nintendo)(Single).gif", title: "Emblema do Demonio (SNES)" },
+        { name: "Donald in Maui Mallard (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Donald%20in%20Maui%20Mallard%20(1)(SNES).PNG", title: "Donald o Pato no Havai (SNES)" },
+        { name: "donkey kong country (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/donkey%20kong%20country%20(1)(BR)(SNES).PNG", title: "Donkey Kong (SNES)" },
+        { name: "donkey kong country 2 (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/donkey%20kong%20country%202%20(1)(BR)(SNES).PNG", title: "Donkey Kong II (SNES)" },
+        { name: "donkey kong country 3 (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/donkey%20kong%20country%203%20(2)(BR)(SNES).PNG", title: "Donkey Kong III (SNES)" },
+        { name: "Doom (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Doom%20(1)(BR)(SNES).bmp", title: "DOOM(SNES)" },
+        { name: "Dragon Ball Z - Hyper Dimension(2)(SPANISH)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Dragon%20Ball%20Z%20-%20Hyper%20Dimension(2)(SPANISH)(SNES).PNG", title: "Dragon Ball Z Batalha Dimensional (SNES)" },
+        { name: "Dragon Ball Z - Super Gokuu Den(1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Dragon%20Ball%20Z%20-%20Super%20Gokuu%20Den(1)(BR)(SNES).PNG", title: "Dragon Ball a Lenda de Goku (SNES)" },
+        { name: "Dragon Quest I & II (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Dragon%20Quest%20I%20%26%20II%20(1)(BR)(SNES).avif", title: "Missão do Dragão I e II (SNES)" },
+        { name: "Dragon Quest III (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Dragon%20Quest%20III%20(1)(BR)(SNES).PNG", title: "Missão do Dragão III (SNES)" },
+        { name: "e.v.o. search for eden (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/e.v.o.%20search%20for%20eden%20(1)(BR)(SNES).PNG", title: "E.V.O Em Busca do Paraíso(SNES)" },
+        { name: "earthbound (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/earthbound%20(1)(BR)(SNES).jpg", title: "Earthbound (SNES)" },
+        { name: "Earthworm Jim 2 (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Earthworm%20Jim%202%20(1)(BR)(SNES).PNG", title: "Minhoca da Terra: Jim(SNES)" },
+        { name: "Fatal Fury Special (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Fatal%20Fury%20Special%20(2)(SNES).jpg", title: "Furia Fatal Especial (SNES)" },
+        { name: "Fatal Fury 2 (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Fatal%20Fury%202%20(2)(SNES).jpg", title: "Furia Fatal 2(SNES)" },
+        { name: "Final Fantasy - Mystic Quest (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Final%20Fantasy%20-%20Mystic%20Quest%20(1)(BR)(SNES).jpg", title: "Final Fantasy Quest Mistica(SNES)" },
+        { name: "Final Fantasy II (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Final%20Fantasy%20II%20(1)(BR)(SNES).png", title: "Final Fantasy II (SNES)" },
+        { name: "Final Fantasy IV (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Final%20Fantasy%20IV%20(1)(BR)(SNES).webp", title: "Final Fantasy IV (SNES)" },
+        { name: "Final Fantasy V  (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Final%20Fantasy%20V%20(1)(BR)(SNES).smc.jpg", title: "Final Fantasy V (SNES)" },
+        { name: "Final Fantasy VI (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Final%20Fantasy%20VI%20(1)(BR)(SNES).jpg", title: "Final Fantasy VI (SNES)" },
+        { name: "Final Fight  (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Final%20Fight%20%20(2)(BR)(SNES).jpg", title: "A Luta Final (SNES)" },
+        { name: "Final Fight 2  (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Final%20Fight%202%20%20(2)(BR)(SNES).png", title: "A Luta Final 2 (SNES)" },
+        { name: "Final Fight 3  (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Final%20Fight%203%20%20(2)(BR)(SNES).jpg", title: "A Luta Final 3 - A Ultima Batalha (SNES)" },
+        { name: "Fire Emblem Genealogy of the Holy War(1)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Fire%20Emblem%20Genealogy%20of%20the%20Holy%20War(1)(ESP)(SNES).PNG", title: "Emblema de Fogo - Geneologia da Guerra Santa (SNES)" },
+        { name: "Fire Striker (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Fire%20Striker%20(2)(BR)(SNES).jpg", title: "Investida das Chamas(SNES)" },
+        { name: "Flintstones(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Flintstones(1)(SNES).webp", title: "Flintstones (SNES)" },
+        { name: "Flintstones, The - The Treasure of Sierra Madrock (1)(BR)(SNES) (USA).sfc", image: "https://emaagora.b-cdn.net/images/Flintstones%2C%20The%20-%20The%20Treasure%20of%20Sierra%20Madrock%20(1)(BR)(SNES)%20(USA).jpg", title: "Flintstones, o tesouro de Sierra Madrock (SNES)" },
+        { name: "Front Mission (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Front%20Mission%20(1)(BR)(SNES).avif", title: "Frente de Batalha (SNES)" },
+        { name: "Front Mission Series - Gun Hazard (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Front%20Mission%20Series%20-%20Gun%20Hazard%20(1)(SNES).jpg", title: "Frente de Batalha - Zona de Perigo (SNES)" },
+        { name: "F-ZERO (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/F-ZERO%20(1)(BR)(SNES).smc.jpg", title: "F-ZERO" },
+        { name: "Ganbare Goemon resgate da princessa yuki (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Ganbare%20Goemon%20resgate%20da%20princessa%20yuki%20(2)(BR)(SNES).jpg", title: "A Lenda do Ninja Mistico (SNES)" },
+        { name: "Ganbare Goemon 2 (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Ganbare%20Goemon%202%20(2)(BR)(SNES).webp", title: "A Lenda do Ninja Mistico 2 (SNES)" },
+        { name: "Ganbare Goemon 3 (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Ganbare%20Goemon%203%20(2)(SNES).webp", title: "A Lenda do Ninja Mistico 2 (SNES)" },        
+        { name: "Go Go Ackman (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Go%20Go%20Ackman%20(1)(BR)(SNES)%20.webp", title: "Vai Nessa Ackman(SNES)" },
+        { name: "Go Go Ackman 2(1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Go%20Go%20Ackman%202(1)(BR)(SNES).jpg", title: "Vai Nessa Ackman(SNES)" },
+        { name: "Go Go Ackman 3 (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/GoGoAckman%203%20(1)(BR)(SNES).gif", title: "Vai Nessa Ackman 3 (SNES)" },
+        { name: "goof troop (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/goof%20troop%20(2)(BR)(SNES).jpg", title: "Patetas em Dobro (SNES)" },
+        { name: "Gradius III (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Gradius%20III%20(1)(BR)(SNES).png", title: "Gradius III (SNES)" },
+        { name: "Great Battle II, The - Last Fighter Twin (2)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Great%20Battle%20II%2C%20The%20-%20Last%20Fighter%20Twin%20(2)(ESP)(SNES).jpg", title: "A Grande Batalha II - O Ultimo Irmão da Guerra (SNES)" },
+        { name: "Great Battle III, The (2)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Great%20Battle%20III%2C%20The%20(2)(ESP)(SNES).webp", title: "A Grande Batalha III (SNES)" },
+        { name: "Great Battle IV, The (2)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Great%20Battle%20IV%2C%20The%20(2)(ESP)(SNES).webp", title: "A Grande Batalha IV (SNES)" },
+        { name: "Great Battle V, The (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Great%20Battle%20V%2C%20The%20(2)(SNES).jpg", title: "A Grande Batalha V (SNES)" },
+        { name: "Great Circus Mystery Starring Mickey & Minnie,(2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Great%20Circus%20Mystery%20Starring%20Mickey%20%26%20Minnie%2C(2)(BR)(SNES).jpg", title: "O Maravilhoso Circo de Mickey Mouse(SNES)" },
+        { name: "Gunman_s Proof (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Gunman_s%20Proof%20(1)(BR)(SNES).png", title: "O Desafio do Pistoleiro (SNES)" },
+        { name: "Hamelin no Violin Hiki (1)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Hamelin%20no%20Violin%20Hiki%20(1)(ESP)(SNES).webp", title: "O Violinista de Hamelin(SNES)" },
+        { name: "Harvest Moon (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Harvest%20Moon%20(1)(BR)(SNES).jpg", title: "Colheita da Noite (SNES)" },
+        { name: "Illusion of Gaia (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Illusion%20of%20Gaia%20(1)(BR)(SNES).png", title: "Ilusão de Gaia(SNES)" },
+        { name: "Joe & Mac - Caveman Ninja(2)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Joe%20%26%20Mac%20-%20Caveman%20Ninja(2)(ESP)(SNES).jpg", title: "Joe & Mac - Ninjas Cavernosos (SNES)" },
+        { name: "Joe & Mac 2 - Lost in the Tropics (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Joe%20%26%20Mac%202%20-%20Lost%20in%20the%20Tropics%20(2)(BR)(SNES).jpg", title: "Joe & Mac II - Perdidos na Selva(SNES)" },
+        { name: "Joe & Mac 3 - Lost in the Tropics (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Joe%20%26%20Mac%203%20-%20Lost%20in%20the%20Tropics%20(2)(SNES).jpg", title: "Joe & Mac III - Perdidos na Selva de Novo (SNES)" },
+        { name: "Kid Klown in Crazy Chase (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kid%20Klown%20in%20Crazy%20Chase%20(1)(SNES).jpg", title: "Palhaço Bagaço - Perseguição Maluca (SNES)" },
+        { name: "Killer Instinct (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Killer%20Instinct%20(2)(BR)(SNES).jpg", title: " Instinto Assassino (SNES)" },
+        { name: "King of the Monsters (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/King%20of%20the%20Monsters%20(2)(SNES).jpg", title: "Rei dos Monstros(SNES)" },
+        { name: "King of the Monsters 2 (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/King%20of%20the%20Monsters%202%20(2)(BR)(SNES).png", title: "Rei dos Monstros II (SNES)" },
+        { name: "Kirby Super Star (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby%20Super%20Star%20(2)(SNES).jpg", title: "Kirby Super Estrela (SNES)" },
+        { name: "Kirby_s Avalanche (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Avalanche%20(2)(SNES).webp", title: "Kirby Avalanche(SNES)" },
+        { name: "Kirby_s Dream Course (1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Course%20(1)(SNES).jpg", title: "Kirby - Pista dos Sonhos (SNES)" },
+        { name: "Kirby_s Dream Land 3 (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Kirby - Terra dos Sonhos 3 (SNES)" },  
+        { name: "Knights of the Round (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Knights%20of%20the%20Round%20(2)(BR)(SNES).jpg", title: "Cavaleiros da Távola Redonda (SNES)" },
+        { name: "Legend of Zelda, The - A Link to the Past (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Legend%20of%20Zelda%2C%20The%20-%20A%20Link%20to%20the%20Past%20(1)(BR)(SNES).png", title: "A Lenda de Zelda - Um Link com o Passado (SNES)" },
+        { name: "Lemmings (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Lemmings%20(1)(BR)(SNES).jpg", title: "Carinhas (SNES)" },
+        { name: "Lion King, (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Lion%20King%2C%20()(BR)(SNES).jpg", title: "Rei Leão(SNES)" },
+        { name: "Live-a-Live (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Live-a-Live%20(1)(BR)(SNES).jpg", title: "Viva e Deixe Viver(SNES)" },
+
+        { name: "Magical Quest Starring Mickey Mouse(2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Magical%20Quest%20Starring%20Mickey%20Mouse(2)(BR)(SNES).png", title: "Magical Quest Starring Mickey Mouse (SNES)" },
+        { name: "Majuu Ou (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Majuu%20Ou%20(1)(BR)(SNES).png", title: "Majuu Ou (SNES)" },
+        { name: "Mario Is Missing! (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Mario%20Is%20Missing!%20(1)(BR)(SNES).jpg", title: "Mario Is Missing! (SNES)" },
+        { name: "Mask(1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Mask(1)(BR)(SNES).jpg", title: "Mask (SNES)" },
+        { name: "MechWarrior 3050 (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/MechWarrior%203050%20(1)(SNES).png", title: "MechWarrior 3050 (SNES)" },
+        { name: "mega man 7 (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/mega%20man%207%20(1)(BR)(SNES).png", title: "Mega Man 7 (SNES)" },
+        { name: "Mega Man Soccer (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Mega%20Man%20Soccer%20(1)(SNES).jpg", title: "Mega Man Soccer (SNES)" },
+        { name: "mega man x (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/mega%20man%20x%20(1)(BR)(SNES).PNG", title: "Mega Man X (SNES)" },
+        { name: "mega man x 2 (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/mega%20man%20x%202%20(1)(BR)(SNES).png", title: "Mega Man X 2 (SNES)" },
+        { name: "mega man x 3 (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/mega%20man%20x%203%20(1)(BR)(SNES).png", title: "Mega Man X 3 (SNES)" },
+        { name: "metal warriors (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/metal%20warriors%20(1)(BR)(SNES).jpg", title: "Metal Warriors (SNES)" },
+        { name: "Mickey Mania (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Mickey%20Mania%20(1)(BR)(SNES).png", title: "Mickey Mania (SNES)" },
+        { name: "Mickey no Tokyo Disneyland Daibouken (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Mickey%20no%20Tokyo%20Disneyland%20Daibouken%20(1)(BR)(SNES).png", title: "Mickey no Tokyo Disneyland Daibouken (SNES)" },
+        { name: "Mickey to Donald - Magical Adventure 3 (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Mickey to Donald - Magical Adventure 3 (SNES)" },
+        { name: "Mighty Morphin Power Rangers (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Mighty%20Morphin%20Power%20Rangers%20(2)(SNES).webp", title: "Mighty Morphin Power Rangers (SNES)" },
+        { name: "Mortal Kombat (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Mortal%20Kombat%20(2)(BR)(SNES).jpg", title: "Mortal Kombat (SNES)" },
+        { name: "Mortal Kombat 2 (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Mortal%20Kombat%20(2)(BR)(SNES).webp", title: "kombat mortal 2 (SNES)" },
+        { name: "Mortal Kombat 3 (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Mortal%20Kombat%203%20(2)(BR)(SNES).png", title: "Mortal Kombat 3 (SNES)" },
+        { name: "NBA Jam (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/NBA%20Jam%20(2)(SNES).png", title: "NBA Jam (SNES)" },
+        { name: "Neugier (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Neugier%20(1)(BR)(SNES).png", title: "Neugier (SNES)" },
+        { name: "New Horizons (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/New%20Horizons%20(1)(SNES).jpg", title: "New Horizons (SNES)" },
+        { name: "Ninja Gaiden Trilogy (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Ninja%20Gaiden%20Trilogy%20(1)(BR).jpg", title: "Ninja Gaiden Trilogy (SNES)" },
+        { name: "Pac-Man 2 - The New Adventures (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Pac-Man%202%20-%20The%20New%20Adventures%20(1)(SNES).png", title: "Pac-Man 2 - The New Adventures (SNES)" },
+        { name: "Paperboy 2 (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Paperboy 2 (SNES)" },
+        { name: "ParodiusIII(2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Lion%20King%2C%20()(BR)(SNES).jpg", title: "parodius III(SNES)" },
+        { name: "Pinocchio (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Pinocchio (SNES)" },
+        { name: "Plok! (1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Dragon%20Ball%20Z%20-%20Hyper%20Dimension(2)(SPANISH)(SNES).PNG", title: "Plok (SNES)" },
+        { name: "Pocky & Rocky (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Pocky & Rocky (SNES)" },
+        { name: "Pocky & Rocky 2 (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Pocky & Rocky 2 (SNES)" },
+        { name: "Popeye - Ijiwaru Majo Sea Hag no Maki (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Popeye - Ijiwaru Majo Sea Hag no Maki (SNES)" },
+        { name: "Rock n_ Roll Racing (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Dragon%20Ball%20Z%20-%20Hyper%20Dimension(2)(SPANISH)(SNES).PNG", title: "rock race (SNES)" },
+        { name: "rockman & Bass(1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Rockman & Bass (SNES)" },
+        { name: "R-Type III - The Third Lightning (1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "R-Type III - The Third Lightning (SNES)" },
+        
+        { name: "Saga dos 7 (1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Saga dos 7 (SNES)" },
+{ name: "Samurai Shodown (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Samurai Shodown (SNES)" },
+{ name: "Scooby-Doo Mystery (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Scooby-Doo Mystery (SNES)" },
+{ name: "Secret of Evermore (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Secret of Evermore (SNES)" },
+{ name: "Secret of Mana (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Secret of Mana (SNES)" },
+{ name: "Seiken Densetsu 3 (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Seiken Densetsu 3 (SNES)" },
+{ name: "Shadowrun (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Shadowrun (SNES)" },
+{ name: "Shin Kidou Senki Gundam W - Endless Duel (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Shin Kidou Senki Gundam W - Endless Duel (SNES)" },
+{ name: "Shin Megami Tensei o velho testamento (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Shin Megami Tensei o velho testamento (SNES)" },
+{ name: "Simpsons, The - Bart_s Nightmare (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "The Simpsons - Bart's Nightmare (SNES)" },
+{ name: "Skyblazer (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "SkyBlazer (SNES)" },
+{ name: "Space Megaforce (1)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Space Megaforce (SNES)" },
+{ name: "Sparkster (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Sparkster (SNES)" },
+{ name: "Spider-Man & Venom - Separation Anxiety (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Spider-Man & Venom - Separation Anxiety (SNES)" },
+{ name: "Spider-Man and the X-Men (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Spider-Man and the X-Men (SNES)" },
+{ name: "Star Fox (1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Star Fox (SNES)" },
+{ name: "Star Fox 2 (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Star Fox 2 (SNES)" },
+{ name: "Star Ocean (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Star Ocean (SNES)" },
+{ name: "Street Fighter Alpha 2 (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Street Fighter Alpha 2 (SNES)" },
+{ name: "Stunt Race FX (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Stunt Race FX (SNES)" },
+{ name: "Sunset Riders (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Sunset Riders (SNES)" },
+{ name: "Super Adventure Island (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Adventure Island (SNES)" },
+{ name: "Super Adventure Island 1(1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Adventure Island 1 (SNES)" },
+{ name: "Super Bomberman 2 (SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Bomberman 2 (SNES)" },
+{ name: "Super Bomberman 2(2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Bomberman 2 (SNES)" },
+{ name: "Super Bomberman 3 (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Bomberman 3 (SNES)" },
+{ name: "Super Bomberman 4 (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Bomberman 4 (SNES)" },
+{ name: "Super Bomberman 5 (2)(JAP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Bomberman 5 (SNES)" },
+{ name: "Super Bonk (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Bonk (SNES)" },
+{ name: "Super Bonk 2 (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Bonk 2 (SNES)" },
+{ name: "Super Ghouls_n Ghosts (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Ghouls'n Ghosts (SNES)" },
+{ name: "Super Mario Kart (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Mario Kart (SNES)" },
+{ name: "Super Mario RPG - Legend of the Seven Stars (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Mario RPG - Legend of the Seven Stars (SNES)" },
+{ name: "Super Metroid (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Metroid (SNES)" },
+{ name: "Super Off Road (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Off Road (SNES)" },
+{ name: "Super Punch-Out!! (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Punch-Out!! (SNES)" },
+{ name: "Super R-Type (1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super R-Type (SNES)" },
+{ name: "Super Street Fighter II (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Super Street Fighter II (SNES)" },
+{ name: "Syvalion - Fúria Dourada (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Syvalion - Fúria Dourada (SNES)" },
+
+{ name: "tartarugas ninjas pelo tempo (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Tartarugas Ninjas pelo Tempo (SNES)" },
+{ name: "terranigma (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Terranigma (SNES)" },
+{ name: "Tetris & Dr. Mario (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Tetris & Dr. Mario (SNES)" },
+{ name: "Tetris Attack (1)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Tetris Attack (SNES)" },
+{ name: "The Firemen (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "The Firemen (SNES)" },
+{ name: "Tiny Toon Adventures - Buster Busts Loose! (1)(ESP)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Tiny Toon Adventures - Buster Busts Loose! (SNES)" },
+{ name: "Tiny Toon Adventures - Wacky Sports Challenge (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Tiny Toon Adventures - Wacky Sports Challenge (SNES)" },
+{ name: "TMNT - Tournament Fighters (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "TMNT - Tournament Fighters (SNES)" },
+{ name: "Top Gear (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Top Gear (SNES)" },
+{ name: "Top Gear 2 (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Top Gear 2 (SNES)" },
+{ name: "Top Gear 3000 (2)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Top Gear 3000 (SNES)" },
+{ name: "Toy Story (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Toy Story (SNES)" },
+{ name: "Trials of Mana (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Trials of Mana (SNES)" },
+{ name: "True Lies (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "True Lies (SNES)" },
+{ name: "Twisted Tales of Spike McFang (1)(ESP)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Twisted Tales of Spike McFang (SNES)" },
+{ name: "Umihara Kawase (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Umihara Kawase (SNES)" },
+{ name: "Uniracers (2)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Uniracers (SNES)" },
+{ name: "Wild Guns (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Wild Guns (SNES)" },
+{ name: "Wonder Project J - Kikai no Shounen Pino (1)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Wonder Project J - Kikai no Shounen Pino (SNES)" },
+{ name: "Worms (2)(BR)(SNES).smc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Worms (SNES)" },
+{ name: "yoshi_is island (1)(BR)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Yoshi's Island (SNES)" },
+{ name: "Yoshi_s Safari (1)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Yoshi's Safari (SNES)" },
+{ name: "Zombies Ate My Neighbors (2)(SNES).sfc", image: "https://emaagora.b-cdn.net/images/Kirby_s%20Dream%20Land%203%20(2)(SNES).jpg", title: "Zombies Ate My Neighbors (SNES)" },
+
+
+
+      ]; 
+
+
+        const container = document.getElementById("game-container");
+
+        games.forEach(game => {
+            const gameBox = document.createElement("div");
+            gameBox.classList.add("game-box");
+            gameBox.innerHTML = `
+                <a href="jogos loader.html?game=${encodeURIComponent(game.name)}">
+                    <img src="${game.image}" alt="${game.title}">
+                    <p>${game.title}</p>
+                </a>
+            `;
+            container.appendChild(gameBox);
+        });
+    </script>
+
+
+    <script>
+     const gamepad = new GamepadHandler(); // <-- START IT
+    </script>
+
+</body>
+</html>

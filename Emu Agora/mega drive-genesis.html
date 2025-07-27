@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emu Agora - Single Player</title>
+    <style>
+        * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+    font-family: Arial, sans-serif;
+    background: url("gifts/singleplayer.gif") no-repeat;
+    background-size: 100% auto;
+    background-attachment: fixed;
+    background-position: top center;
+    background-color: #000;
+    color: orange;
+  }
+     
+    header {
+      position: relative; /* necessário para o h1 ser absoluto dentro dele */
+      display: flex;
+      align-items: center;
+      background-color: #4b4b4b;
+      padding: 5px;
+      z-index: 1;
+    }
+
+    .logo {
+      height: 110px;
+    }
+
+
+    nav {
+      background-color: #4b4b4b;
+      width: 100%;
+      z-index: 1;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      gap: 50px;
+      padding: 1px 0;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: orange;
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
+
+    h1 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 5rem;
+      color: orange;
+    }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 50px;
+            padding: 50px;
+        }
+        .game-box {
+            background-color: #414141;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .game-box:hover {
+            transform: scale(1.05);
+        }
+        .game-box img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .game-box p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      h1 {
+        position: static;
+        transform: none;
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      nav ul {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+    </style>
+</head>
+<body>
+    
+    <header>  
+        <a href="index.html"><img src="imagens\emu agora logo.png" alt="Logo Emu" class="logo" /></a>
+        <h1>Mega Drive/Genesis</h1>
+      </header>
+
+     <nav>
+    <ul>
+      <li><a href="singleplayer.html">Singleplayer</a></li>
+      <li><a href="multiplayer.html">Multiplayer</a></li>
+    </ul>
+  </nav>
+
+    <div class="container" id="game-container"></div>
+
+    <script>
+        const games = [
+            { name: "Aladdin(BR).sfc", image: "capa dos jogos/tartarudasnes.jpg", title: "Aladdin" },
+            { name: "Chrono Trigger (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "Chrono Trigger" },
+            { name: "Demons Crest (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "Crista dos Demônios" },
+            { name: "Donkey Kong Country (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "pais dos macacos" },
+            { name: "E.V.O. Search for Eden (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "E.V.O em busca do eden" },
+            { name: "Earthbound (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "Earthbound" },
+            { name: "Mega Man X (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "Mega Homem X" },
+            { name: "Mega Man X 2 (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "Mega Homem X2" },
+            { name: "Mega Man X 3 (BR).smc", image: "capa dos jogos/tartarudasnes.jpg", title: "Mega Homem X3" },
+            { name: "Rockman & Forte (BR).smc", image: "data/thumbnails/supermario.png", title: "Super Mario 64" },
+            { name: "Mega Man 7 (BR).smc", image: "data/thumbnails/supermario.png", title: "Mega Homem 7" },
+            { name: "Super Mario All-Stars.sfc", image: "data/thumbnails/supermario.png", title: "Super Mario All Stars" },
+            { name: "Terranigma (BR).sfc", image: "data/thumbnails/supermario.png", title: "O enigma da terra" },
+            { name: "ninja.sfc", image: "data/thumbnails/supermario.png", title: "ninja ninja" },
+            { name: "Yoshi's Island(BR).sfc", image: "data/thumbnails/supermario.png", title: "Ilha Yoshi" }
+        ];
+
+        const container = document.getElementById("game-container");
+
+        games.forEach(game => {
+            const gameBox = document.createElement("div");
+            gameBox.classList.add("game-box");
+            gameBox.innerHTML = `
+                <a href="jogos loader.html?game=${encodeURIComponent(game.name)}">
+                    <img src="${game.image}" alt="${game.title}">
+                    <p>${game.title}</p>
+                </a>
+            `;
+            container.appendChild(gameBox);
+        });
+    </script>
+
+
+    <script>
+     const gamepad = new GamepadHandler(); // <-- START IT
+    </script>
+
+</body>
+</html>

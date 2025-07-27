@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emu Agora - Loader</title>
+</head>
+<body>
+    <div id="game"></div>
+
+    <script src="data/loader.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const selectedGame = urlParams.get("game");
+
+        if (!selectedGame) {
+            document.body.innerHTML = "<h1 style='color: orange;'>No game selected!</h1>";
+            throw new Error("No game selected.");
+        }
+
+        const extToCore = {
+            "nes": "nes", "unif": "nes", "unf": "nes", "fds": "nes",
+            "smc": "snes", "fig": "snes", "sfc": "snes", "gd3": "snes",
+            "z64": "n64", "n64": "n64",
+            "pce": "pce",
+            "ngp": "ngp", "ngc": "ngp",
+            "ws": "ws", "wsc": "ws",
+            "col": "coleco", "cv": "coleco",
+            "d64": "vice_x64sc",
+            "nds": "nds", "gba": "gba", "gb": "gb"
+        };
+
+        const parts = selectedGame.split(".");
+        const ext = parts.pop().toLowerCase();
+        const core = extToCore[ext] || "snes";
+
+        window.EJS_player = "#game";
+        window.EJS_gameName = parts.join(".");
+        window.EJS_gameUrl = "https://emaagora.b-cdn.net/games/" + selectedGame;
+        window.EJS_core = core;
+        window.EJS_pathtodata = "data/";
+        window.EJS_startOnLoaded = true;
+
+        window.EJS_netplay = {
+            server: "pusher",
+            options: {
+                key: "1e9cc852e39410c081e9",
+                cluster: "sa1"
+            }
+        };
+
+    </script>
+</body>
+</html>
