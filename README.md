@@ -1,3 +1,4 @@
+EX: https://thunderous-praline-724527.netlify.app/singleplayer
 Emu Agora é uma plataforma web de emulação que permite jogar títulos clássicos diretamente no navegador, sem a necessidade de downloads ou instalações. O projeto foi criado com foco em acessibilidade, desempenho e organização visual, com suporte a modos single player e multiplayer (netplay) utilizando EmulatorJS.
 
 🕹️ Funcionalidades principais:
